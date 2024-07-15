@@ -6,16 +6,13 @@ import cors from "cors";
 import helmet from "helmet";
 import template from "./../template.js"; // Import the template
 import userRoutes from "./routes/user.routes.js";
-import authRoutes from "./routes/auth.routes.js";
+import authRoutes from "./routes/auth.routes.js"; // Correct import for auth routes
 import path from "path";
 
 const app = express();
 const CURRENT_WORKING_DIR = process.cwd();
 
 // Middleware setup
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(CURRENT_WORKING_DIR, 'dist/app')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -24,8 +21,8 @@ app.use(helmet());
 app.use(cors());
 
 // Mount routes
-app.use("/api/users", userRoutes);
-app.use("/auth", authRoutes);
+app.use("/api/users", userRoutes); 
+app.use("/auth", authRoutes); 
 
 // Serve the HTML template at the root URL
 app.get("/", (req, res) => {
