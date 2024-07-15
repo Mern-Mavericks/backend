@@ -1,28 +1,38 @@
-
 import express from "express";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import compress from "compression";
 import cors from "cors";
 import helmet from "helmet";
-import Template from "./../template.js";
+import template from "./../template.js"; // Import the template
 import userRoutes from "./routes/user.routes.js";
 import authRoutes from "./routes/auth.routes.js";
 import path from "path";
 
 const app = express();
 const CURRENT_WORKING_DIR = process.cwd();
+
+// Middleware setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("./server/dist/app"));
-app.use("/", userRoutes);
-app.use("/", authRoutes);
+app.use(express.static(path.join(CURRENT_WORKING_DIR, 'dist/app')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
 app.use(cors());
+
+// Mount routes
+app.use("/api/users", userRoutes);
+app.use("/auth", authRoutes);
+
+// Serve the HTML template at the root URL
+app.get("/", (req, res) => {
+  res.status(200).send(template());
+});
+
+// Error handling middleware
 app.use((err, req, res, next) => {
   if (err.name === "UnauthorizedError") {
     res.status(401).json({ error: err.name + ": " + err.message });
@@ -31,4 +41,5 @@ app.use((err, req, res, next) => {
     console.log(err);
   }
 });
+
 export default app;
