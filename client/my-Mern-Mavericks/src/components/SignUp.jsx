@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { signup } from "../../../../../api/authApi";
+import { signup } from "../../../../api/authApi";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({

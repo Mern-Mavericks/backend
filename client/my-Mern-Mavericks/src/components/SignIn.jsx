@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { signin } from "../../../../../api/authApi";
+import { signin } from "../../../../api/authApi";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../context/authContext";
 
 const SignIn = () => {
   const [formData, setFormData] = useState({
@@ -7,6 +9,8 @@ const SignIn = () => {
     password: "",
   });
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
+  const { signin } = useAuth();
 
   const handleChange = (e) => {
     setFormData({
@@ -27,6 +31,9 @@ const SignIn = () => {
         setMessage(res.error);
       } else {
         setMessage("Successfully signed in!");
+        localStorage.setItem("token", res.token);
+        login();
+        navigate("/");
       }
     } catch (err) {
       setMessage("Error signing up, please try again");
