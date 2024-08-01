@@ -2,13 +2,16 @@ import React, { useState } from "react";
 import { signup } from "../../../../api/authApi";
 
 const SignUp = () => {
+  // State to manage form data for name, email, and password
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [errorMessage, setErrorMessage] = useState(null);
+  // State to manage message shown to user
+  const [message, setMessage] = useState("");
 
+  // Handler to update form data state when input changes
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -16,27 +19,29 @@ const SignUp = () => {
     });
   };
 
+  // Handler to manage form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.name || !formData.email || !formData.password) {
-      return setErrorMessage("All fields are required");
+      return setMessage("All fields are required");
     }
 
     try {
+      // API call to sign in the user with the provided credentials
       const res = await signup(formData);
       if (res.error) {
-        setErrorMessage(res.error);
+        setMessage(res.error);
       } else {
-        setErrorMessage("Successfully signed up!");
+        setMessage("Successfully signed up!");
       }
     } catch (err) {
-      setErrorMessage("Error signing up, please try again");
+      setMessage(err.message);
     }
   };
 
   const displayErrorMessage = () => {
-    if (errorMessage) {
-      return <p>{errorMessage}</p>;
+    if (message) {
+      return <p>{message}</p>;
     }
     return null;
   };

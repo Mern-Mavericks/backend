@@ -16,16 +16,19 @@ const Navbar = () => {
           <Link to="/users" className="navbar-link">
             USERS
           </Link>
+          {/* // If the user is authenticated (isAuthenticated is true), show the
+          "MY PROFILE" and "SIGN OUT" links */}
           {isAuthenticated ? (
             <>
               <Link to="/profile" className="navbar-link">
                 MY PROFILE
               </Link>
-              <Link to="/signin" className="navbar-link">
+              <Link to="/" className="navbar-link" onClick={signout}>
                 SIGN OUT
               </Link>
             </>
           ) : (
+            // If the user is not authenticated (isAuthenticated is false), show the "SIGN UP" and "SIGN IN" links
             <>
               <Link to="/signup" className="navbar-link">
                 SIGN UP
