@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { signin } from "../../../../api/authApi";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../../context/authContext";
+import './SignIn.css';
 
 const SignIn = () => {
   // State to manage form data for email and password
@@ -53,33 +54,36 @@ const SignIn = () => {
   };
 
   return (
-    <div>
-      <h2>Sign In</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
-        </div>
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Sign In</button>
-        {displayErrorMessage()}
-      </form>
+    <div className="sign-in-container">
+  <h2>Sign In</h2>
+  <form onSubmit={handleSubmit} className="sign-in-form">
+    <div className="form-group">
+      <label htmlFor="email">Email</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        value={formData.email}
+        onChange={handleChange}
+        className="form-control"
+      />
     </div>
+    <div className="form-group">
+      <label htmlFor="password">Password</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        value={formData.password}
+        onChange={handleChange}
+        className="form-control"
+      />
+    </div>
+    <button type="submit" className="submit-button">Sign In</button>
+    {displayErrorMessage && <div className="error-message">{displayErrorMessage()}</div>}
+  </form>
+</div>
+
   );
 };
 

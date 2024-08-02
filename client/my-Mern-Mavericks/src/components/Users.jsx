@@ -34,7 +34,7 @@ const Users = () => {
       {displayErrorMessage()}
       <ul>
         {users.map((user) => (
-          <li key={user._id}>{user.name}</li>
+          <li key={user._id}>{user.username}</li>
         ))}
       </ul>
     </div>

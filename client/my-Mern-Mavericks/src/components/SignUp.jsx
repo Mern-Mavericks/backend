@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { signup } from "../../../../api/authApi";
+import './SignUp.css';
 
 const SignUp = () => {
   // State to manage form data for name, email, and password
@@ -47,10 +48,10 @@ const SignUp = () => {
   };
 
   return (
-    <div>
+    <div className="sign-up-container">
       <h2>Sign Up</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
+      <form onSubmit={handleSubmit} className="sign-up-form">
+        <div className="form-group">
           <label htmlFor="name">Name</label>
           <input
             type="text"
@@ -58,9 +59,10 @@ const SignUp = () => {
             name="name"
             value={formData.name}
             onChange={handleChange}
+            className="form-control"
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -68,9 +70,10 @@ const SignUp = () => {
             name="email"
             value={formData.email}
             onChange={handleChange}
+            className="form-control"
           />
         </div>
-        <div>
+        <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -78,13 +81,15 @@ const SignUp = () => {
             name="password"
             value={formData.password}
             onChange={handleChange}
+            className="form-control"
           />
         </div>
-        <button type="submit">Sign Up</button>
-        {displayErrorMessage()}
+        <button type="submit" className="submit-button">Sign Up</button>
+        {displayErrorMessage && <div className="error-message">{displayErrorMessage()}</div>}
       </form>
     </div>
   );
 };
+
 
 export default SignUp;
