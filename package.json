@@ -10,14 +10,16 @@
     "@babel/preset-env": "^7.22.5",
     "babel-loader": "^9.1.2",
     "concurrently": "^8.2.0",
-    "nodemon": "^2.0.22"
+    "nodemon": "^2.0.22",
+    "prettier": "^3.3.3"
   },
   "scripts": {
     "dev": "concurrently 'vite' \"nodemon server.js\"",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "start": "node server.js"
+    "start": "node server.js",
+    "prettier": "prettier --write \"server/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
     "axios": "^1.7.2",

@@ -1,12 +1,12 @@
-import User from "../models/user.model.js";
-import extend from "lodash/extend.js";
-import errorHandler from "./error.controller.js";
+import User from '../models/user.model.js';
+import extend from 'lodash/extend.js';
+import errorHandler from './error.controller.js';
 import { connectToDb, getDb, closeConnection } from '../db/connection.js';
 const create = async (req, res) => {
   console.log(req.body);
   const user = new User(req.body);
-  try {  
-      await connectToDb();
+  try {
+    await connectToDb();
     const db = getDb();
 
     // Example: Insert a document into a collection
@@ -20,7 +20,7 @@ const create = async (req, res) => {
 
     await user.save();
     return res.status(200).json({
-      message: "Successfully signed up!",
+      message: 'Successfully signed up!',
     });
   } catch (err) {
     return res.status(400).json({
@@ -42,14 +42,14 @@ const userByID = async (req, res, next, id) => {
   try {
     let user = await User.findById(id);
     if (!user)
-      return res.status("400").json({
-        error: "User not found",
+      return res.status('400').json({
+        error: 'User not found',
       });
     req.profile = user;
     next();
   } catch (err) {
-    return res.status("400").json({
-      error: "Could not retrieve user",
+    return res.status('400').json({
+      error: 'Could not retrieve user',
     });
   }
 };

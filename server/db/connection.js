@@ -1,9 +1,8 @@
 import { MongoClient } from 'mongodb';
 export const mongoConfig = {
-    url: 'mongodb://localhost:27017', // Replace with your MongoDB URL if it's hosted remotely
-    dbName: 'mernproject' // Replace with your database name
-  };
-  
+  url: 'mongodb://localhost:27017', // Replace with your MongoDB URL if it's hosted remotely
+  dbName: 'mernproject', // Replace with your database name
+};
 
 const client = new MongoClient(mongoConfig.url, { useUnifiedTopology: true });
 
