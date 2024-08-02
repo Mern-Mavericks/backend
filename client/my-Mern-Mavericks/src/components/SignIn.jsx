@@ -55,34 +55,36 @@ const SignIn = () => {
 
   return (
     <div className="sign-in-container">
-  <h2>Sign In</h2>
-  <form onSubmit={handleSubmit} className="sign-in-form">
-    <div className="form-group">
-      <label htmlFor="email">Email</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        value={formData.email}
-        onChange={handleChange}
-        className="form-control"
-      />
-    </div>
-    <div className="form-group">
-      <label htmlFor="password">Password</label>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        value={formData.password}
-        onChange={handleChange}
-        className="form-control"
-      />
-    </div>
-    <button type="submit" className="submit-button">Sign In</button>
-    {displayErrorMessage && <div className="error-message">{displayErrorMessage()}</div>}
-  </form>
-</div>
+    <h2>Sign In</h2>
+    <form onSubmit={handleSubmit} className="sign-in-form">
+      <div className="form-group">
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+          className="form-control"
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          className="form-control"
+        />
+      </div>
+      <button type="submit" className="submit-button">Sign In</button>
+      {displayErrorMessage && (
+        <div className="error-message">{displayErrorMessage()}</div>
+      )}
+    </form>
+  </div>
 
   );
 };
