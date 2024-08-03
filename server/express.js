@@ -9,6 +9,7 @@ import userRoutes from './routes/user.routes.js';
 import authRoutes from './routes/auth.routes.js'; // Correct import for auth routes
 import path from 'path';
 import productRoutes from './routes/product.routes.js';
+import User from './models/user.model.js';
 
 const app = express();
 const CURRENT_WORKING_DIR = process.cwd();
@@ -38,6 +39,15 @@ app.use((err, req, res, next) => {
   } else if (err) {
     res.status(400).json({ error: err.name + ': ' + err.message });
     console.log(err);
+  }
+});
+
+app.get('/users', async (req, res) => {
+  try {
+    const users = await User.find(); // Assuming you have a User model
+    res.json(users);
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to fetch users' });
   }
 });
 
