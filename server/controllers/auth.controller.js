@@ -32,6 +32,30 @@ const signin = async (req, res) => {
   }
 };
 
+// Signup function to register a new user and generate a JWT token
+const signup = async (req, res) => {
+  const user = new User(req.body);
+  try {
+    await user.save();
+    const token = jwt.sign({ _id: user._id }, config.jwtSecret, {
+      expiresIn: '1h',
+    });
+    res.cookie('t', token, { expire: new Date() + 9999 });
+    return res.status(200).json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      },
+    });
+  } catch (err) {
+    return res.status(400).json({
+      error: 'Could not sign up user',
+    });
+  }
+};
+
 // Sign out function to clear JWT token from cookies
 const signout = (req, res) => {
   res.clearCookie('t');
@@ -54,4 +78,4 @@ const hasAuthorization = (req, res, next) => {
   next();
 };
 
-export default { signin, signout, requireSignin, hasAuthorization };
+export default { signin, signout, signup, requireSignin, hasAuthorization };
