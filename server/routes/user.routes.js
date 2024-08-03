@@ -6,6 +6,9 @@ const router = express.Router();
 
 router.route('/').get(userCtrl.list).post(userCtrl.create);
 
+// Route to list all users
+router.route('/').get(userCtrl.list);
+
 router
   .route('/:userId')
   .get(authCtrl.requireSignin, userCtrl.read)
