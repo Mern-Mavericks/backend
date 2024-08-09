@@ -5,7 +5,7 @@ import { requireSignin } from '../middlewares/auth.middleware.js';
 
 const router = express.Router();
 
-router.route('/products/featured').get(requireSignin, productCtrl.listProducts);
+router.route('/products/featured').get( productCtrl.listProducts);
 
 // New route for listing all products
 router.route('/products').get(requireSignin, productCtrl.listAllProducts);
