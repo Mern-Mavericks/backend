@@ -2,7 +2,7 @@ import Order from '../models/order.model.js';
 import { v4 as uuidv4 } from 'uuid';
 
 // Create a new order
-export const createOrder = async (req, res) => {
+ const createOrder = async (req, res) => {
   try {
     const { productId, quantity, address, userName, phoneNumber } = req.body;
     const orderNumber = uuidv4();
@@ -25,7 +25,7 @@ export const createOrder = async (req, res) => {
 };
 
 // Get all previous orders (delivered)
-export const getPreviousOrders = async (req, res) => {
+ const getPreviousOrders = async (req, res) => {
   try {
     const orders = await Order.find({ delivered: true });
     res.status(200).json(orders);
@@ -35,7 +35,7 @@ export const getPreviousOrders = async (req, res) => {
 };
 
 // Get all current orders (not delivered)
-export const getCurrentOrders = async (req, res) => {
+ const getCurrentOrders = async (req, res) => {
   try {
     const orders = await Order.find({ delivered: false });
     res.status(200).json(orders);
@@ -44,4 +44,58 @@ export const getCurrentOrders = async (req, res) => {
   }
 };
 
-export default {createOrder, getCurrentOrders, getPreviousOrders,  };
+// Get order by ID
+ const getOrderById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const order = await Order.findById(id);
+  
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      res.status(200).json(order);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch order', error });
+    }
+  };
+  
+
+  // Update order by ID
+ const updateOrderById = async (req, res) => {
+    try {
+      const { id } = req.params;
+      const updatedData = req.body;
+  
+      const updatedOrder = await Order.findByIdAndUpdate(id, updatedData, { new: true });
+  
+      if (!updatedOrder) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      res.status(200).json(updatedOrder);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to update order', error });
+    }
+ };
+  
+ // Delete order by ID
+ const deleteOrderById = async (req, res) => {
+    try {
+      const { id } = req.params;
+  
+      const deletedOrder = await Order.findByIdAndDelete(id);
+  
+      if (!deletedOrder) {
+        return res.status(404).json({ message: 'Order not found' });
+      }
+  
+      res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete order', error });
+    }
+  };
+  
+  
+
+export default {createOrder, getCurrentOrders, getPreviousOrders, getOrderById, updateOrderById, deleteOrderById };

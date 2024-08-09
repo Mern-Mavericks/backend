@@ -10,6 +10,16 @@ router.post('/create',requireSignin, orderController.createOrder);
 router.get('/previous',requireSignin, orderController.getPreviousOrders);
 
 // Get all current orders (not delivered)
-router.get('/current',requireSignin, orderController.getCurrentOrders);
+router.get('/current', requireSignin, orderController.getCurrentOrders);
+
+
+// Get order by ID
+router.get('/:id', requireSignin, orderController.getOrderById);
+
+// Update order by ID
+router.put('/:id', requireSignin, orderController.updateOrderById);
+
+// Delete order by ID
+router.delete('/:id', requireSignin, orderController.deleteOrderById);
 
 export default router;
