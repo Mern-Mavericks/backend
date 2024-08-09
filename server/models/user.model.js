@@ -14,6 +14,14 @@ const UserSchema = new mongoose.Schema({
     match: [/.+\@.+\..+/, 'Please fill a valid email address'],
     required: 'Email is required',
   },
+  address: {
+    type: String,
+    required: 'Address is required',
+  },
+  phone: {
+    type: String,
+    required: 'Phone number is required',
+  },
   created: {
     type: Date,
     default: Date.now,
