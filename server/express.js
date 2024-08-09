@@ -10,6 +10,7 @@ import authRoutes from './routes/auth.routes.js'; // Correct import for auth rou
 import path from 'path';
 import productRoutes from './routes/product.routes.js';
 import User from './models/user.model.js';
+import orderRoutes from './routes/order.routes.js';
 
 const app = express();
 const CURRENT_WORKING_DIR = process.cwd();
@@ -26,6 +27,7 @@ app.use(cors());
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes);
 app.use('/api', productRoutes);
+app.use('/api/orders', orderRoutes);
 
 // Serve the HTML template at the root URL
 app.get('/', (req, res) => {
