@@ -10,6 +10,18 @@ const listProducts = async (req, res) => {
   }
 };
 
+// listing all products
+const listAllProducts = async (req, res) => {
+  try {
+      const products = await Product.find({});
+      res.json(products);
+  } catch (err) {
+      return res.status(400).json({
+          error: "Could not retrieve products"
+      });
+  }
+};
+
 
 // Function to add a new product
 const addProduct = async (req, res) => {
@@ -72,4 +84,4 @@ const deleteAllProducts = async (req, res) => {
       res.status(400).json({ error: 'Could not delete products' });
     }
   };
-export default { listProducts, addProduct, updateProduct, deleteProduct, getProductById, deleteAllProducts };
+export default { listProducts, addProduct, listAllProducts, updateProduct, deleteProduct, getProductById, deleteAllProducts };

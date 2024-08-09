@@ -7,6 +7,9 @@ const router = express.Router();
 
 router.route('/products/featured').get(requireSignin, productCtrl.listProducts);
 
+// New route for listing all products
+router.route('/products').get(requireSignin, productCtrl.listAllProducts);
+
 // Route to add a new product
 router.route('/products').post(requireSignin, productCtrl.addProduct);
 
