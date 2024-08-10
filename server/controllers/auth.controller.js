@@ -50,6 +50,7 @@ const signup = async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err,'err')
     return res.status(400).json({
       error: 'Could not sign up user',
     });

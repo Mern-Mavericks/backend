@@ -16,11 +16,9 @@ const UserSchema = new mongoose.Schema({
   },
   address: {
     type: String,
-    required: 'Address is required',
   },
   phone: {
     type: String,
-    required: 'Phone number is required',
   },
   created: {
     type: Date,
