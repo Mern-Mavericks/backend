@@ -40,40 +40,58 @@ const list = async (req, res) => {
 };
 const userByID = async (req, res, next, id) => {
   try {
+    console.log("Looking for user with ID:", id);
     let user = await User.findById(id);
-    if (!user)
-      return res.status('400').json({
-        error: 'User not found',
-      });
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: 'User not found' });
+    }
     req.profile = user;
     next();
   } catch (err) {
-    return res.status('400').json({
+    console.error("Error retrieving user:", err);
+    return res.status(400).json({
       error: 'Could not retrieve user',
     });
   }
 };
+
 const read = (req, res) => {
+  if (!req.profile) {
+    return res.status(400).json({ error: 'User profile not found' });
+  }
   req.profile.hashed_password = undefined;
   req.profile.salt = undefined;
   return res.json(req.profile);
 };
 
+
 const update = async (req, res) => {
   try {
-    let user = req.profile;
-    user = extend(user, req.body);
-    user.updated = Date.now();
-    await user.save();
+    const userId = req.auth._id; // Get user ID from the decoded JWT token
+
+    // Fetch the user directly if req.profile is not set
+    let user = req.profile || await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user = extend(user, req.body); // Merge the updated fields into the user object
+    user.updated = Date.now(); // Update the timestamp
+
+    await user.save(); // Save the updated user object to the database
     user.hashed_password = undefined;
     user.salt = undefined;
     res.json(user);
   } catch (err) {
+    console.error("Error updating user:", err);
     return res.status(400).json({
-      error: errorHandler.getErrorMessage(err),
+      error: 'Could not update user',
     });
   }
 };
+
 const remove = async (req, res) => {
   try {
     let user = req.profile;
@@ -87,4 +105,35 @@ const remove = async (req, res) => {
     });
   }
 };
-export default { create, userByID, read, list, remove, update };
+
+// Get My Profile (Authenticated User)
+const getMyProfile = async (req, res) => {
+  try {
+    console.log("getMyProfile function is running");
+    // console.log(req,'request')
+    const userId = req.auth._id; // Assuming req.auth is populated correctly
+    console.log("Looking for user with ID:", userId);
+
+    let user = await User.findById(userId);
+
+    if (!user) {
+      console.log("User not found");
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Safely set properties only if the user exists
+    user.hashed_password = undefined;
+    user.salt = undefined;
+    res.json(user);
+  } catch (err) {
+    console.error("Error retrieving user profile:", err);
+    return res.status(400).json({
+      error: 'Could not retrieve user',
+    });
+  }
+};
+
+
+
+
+export default { create, userByID, read, list, remove, update, getMyProfile };

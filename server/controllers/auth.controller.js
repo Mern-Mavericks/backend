@@ -66,9 +66,14 @@ const signout = (req, res) => {
 const requireSignin = expressjwt({
   secret: config.jwtSecret,
   algorithms: ['HS256'],
-  userProperty: 'auth',
+  userProperty: 'auth', // This populates req.auth with the JWT payload
+  getToken: (req) => {
+    if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
+      return req.headers.authorization.split(' ')[1];
+    }
+    return null;
+  },
 });
-
 // Middleware to check if the authenticated user is authorized to perform certain actions
 const hasAuthorization = (req, res, next) => {
   const authorized = req.profile && req.auth && req.profile._id == req.auth._id;
