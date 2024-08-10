@@ -2,6 +2,22 @@ import User from '../models/user.model.js';
 import extend from 'lodash/extend.js';
 import errorHandler from './error.controller.js';
 import { connectToDb, getDb, closeConnection } from '../db/connection.js';
+import multer from 'multer';
+import path from 'path';
+
+// Setup multer for image upload
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads/'); // Folder where images will be stored
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to avoid name conflicts
+  },
+});
+
+const upload = multer({ storage: storage }).single('profileImage'); // Handle single file upload
+
+
 const create = async (req, res) => {
   console.log(req.body);
   const user = new User(req.body);
@@ -66,30 +82,69 @@ const read = (req, res) => {
 };
 
 
+// const update = async (req, res) => {
+//   try {
+//     const userId = req.auth._id; // Get user ID from the decoded JWT token
+
+//     // Fetch the user directly if req.profile is not set
+//     let user = req.profile || await User.findById(userId);
+
+//     if (!user) {
+//       return res.status(404).json({ error: 'User not found' });
+//     }
+
+//     user = extend(user, req.body); // Merge the updated fields into the user object
+//     user.updated = Date.now(); // Update the timestamp
+
+//     await user.save(); // Save the updated user object to the database
+//     user.hashed_password = undefined;
+//     user.salt = undefined;
+//     res.json(user);
+//   } catch (err) {
+//     console.error("Error updating user:", err);
+//     return res.status(400).json({
+//       error: 'Could not update user',
+//     });
+//   }
+// };
+
 const update = async (req, res) => {
-  try {
-    const userId = req.auth._id; // Get user ID from the decoded JWT token
-
-    // Fetch the user directly if req.profile is not set
-    let user = req.profile || await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+  upload(req, res, async function (err) {
+    if (err) {
+      console.error("Error uploading file:", err);
+      return res.status(400).json({
+        error: 'Error uploading file',
+      });
     }
+    try {
+      const userId = req.auth._id; // Get user ID from the decoded JWT token
 
-    user = extend(user, req.body); // Merge the updated fields into the user object
-    user.updated = Date.now(); // Update the timestamp
+      // Fetch the user directly if req.profile is not set
+      let user = req.profile || await User.findById(userId);
 
-    await user.save(); // Save the updated user object to the database
-    user.hashed_password = undefined;
-    user.salt = undefined;
-    res.json(user);
-  } catch (err) {
-    console.error("Error updating user:", err);
-    return res.status(400).json({
-      error: 'Could not update user',
-    });
-  }
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+
+      user = extend(user, req.body); // Merge the updated fields into the user object
+      user.updated = Date.now(); // Update the timestamp
+
+      // If a file was uploaded, set the profileImage field
+      if (req.file) {
+        user.profileImage = req.file.path;
+      }
+
+      await user.save(); // Save the updated user object to the database
+      user.hashed_password = undefined;
+      user.salt = undefined;
+      res.json(user);
+    } catch (err) {
+      console.error("Error updating user:", err);
+      return res.status(400).json({
+        error: 'Could not update user',
+      });
+    }
+  });
 };
 
 const remove = async (req, res) => {
@@ -119,6 +174,12 @@ const getMyProfile = async (req, res) => {
     if (!user) {
       console.log("User not found");
       return res.status(404).json({ error: 'User not found' });
+    }
+
+    console.log(user,'user')
+    // Include the full URL to the image if it exists
+    if (user.profileImage) {
+      user.profileImage = `${req.protocol}://${req.get('host')}/uploads/${user.profileImage}`;
     }
 
     // Safely set properties only if the user exists

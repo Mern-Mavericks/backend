@@ -26,6 +26,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  profileImage: {
+    type: String, // This will store the filename or URL of the image
+    default: '',  // Default to an empty string if no image is provided
+  },
   updated: {
     type: Date,
     default: Date.now,
