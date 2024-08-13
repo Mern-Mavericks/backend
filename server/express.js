@@ -21,7 +21,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(compress());
 app.use(helmet());
-app.use(cors());
+app.use(cors({
+  origin: 'https://your-netlify-site.netlify.app', 
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], 
+  credentials: true, 
+}));
 
 // Mount routes
 app.use('/api/users', userRoutes);
