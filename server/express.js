@@ -23,7 +23,7 @@ app.use(compress());
 app.use(helmet());
 
 app.use(cors({
-  origin: 'https://main--mern-mavericks-ui.netlify.app', 
+  origin: ['https://main--mern-mavericks-ui.netlify.app', 'http://localhost:3000' , 'http://localhost:5173' ],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   credentials: true,
 }));
