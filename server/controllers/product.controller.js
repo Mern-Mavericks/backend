@@ -4,7 +4,7 @@ import Product from '../models/product.model.js';
 const listProducts = async (req, res) => {
   try {
     const products = await Product.find({ featured: true }).exec();
-    res.json(products);
+    res.status(200).json(products);
   } catch (err) {
     res.status(400).json({ error: 'Could not retrieve products' });
   }
