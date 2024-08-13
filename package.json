@@ -13,12 +13,11 @@
     "nodemon": "^2.0.22",
     "prettier": "^3.3.3"
   },
-  "scripts": {
-    "dev": "concurrently 'vite' \"nodemon server.js\"",
-    "build": "vite build",
-    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview",
+ "scripts": {
+    "dev": "concurrently \"nodemon server.js\"",
     "start": "node server.js",
+    "build": "echo 'No build step required for backend'",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "prettier": "prettier --write \"server/**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
   },
   "dependencies": {
