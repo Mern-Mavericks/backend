@@ -28,6 +28,12 @@ app.use(cors({
   credentials: true,
 }));
 
+app.options('*', cors({
+  origin: ['https://main--mern-mavericks-ui.netlify.app', 'http://localhost:3000', 'http://localhost:5173'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+}));
+
 // Mount routes
 app.use('/api/users', userRoutes);
 app.use('/auth', authRoutes);
